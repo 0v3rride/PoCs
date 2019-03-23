@@ -11,8 +11,8 @@ from requests import *;
 def parseArgs():
     parser = ArgumentParser();
     parser.add_argument("-host", required=True, type=str, help="IP address or FQDN of the host to check");
-    parser.add_argument("-verbose", required=False, action="store_false", default=False, help="Returns a detailed response from the get request");
-    parser.add_argument("-tls", required=False, action="store_false", default=False, help="Use this flag is the target host is using https");
+    parser.add_argument("-verbose", required=False, action="store_true", default=False, help="Returns a detailed response from the get request");
+    parser.add_argument("-tls", required=False, action="store_true", default=False, help="Use this flag is the target host is using https");
     parser.add_argument("-port", required=False, type=int, default=6677, help="By default the Thomson Reuters Desktop Service listens on port 6677, but I've also seen it listen on ports 7000-7002");
 
     return parser.parse_args();
