@@ -1,3 +1,10 @@
+#!/usr/bin/env python
+
+#######################
+#   PoC by: 0v3rride  #
+#   DoC: March 2019   #
+#######################
+
 from argparse import *;
 from requests import *;
 
