@@ -23,6 +23,8 @@ def check():
 
     if args.tls:
         greq = get("{}{}:{}".format("https://", args.host, args.port));
+    elif not args.tls:
+        greq = get("{}{}:{}".format("http://", args.host, args.port));
     else:
         greq = get("{}{}:{}".format("http://", args.host, args.port));
 
@@ -54,6 +56,8 @@ def main():
                         [*] https://github.com/0v3rride
                         [*] Script has started...
                         [*] Use CTRL+C to cancel the script at anytime.
+                        
+    [!]: This script checks to see if the target if vulnerable. It does not exploit the vulnerability!
 
     """);
 
