@@ -58,6 +58,7 @@ def main():
                         [*] Use CTRL+C to cancel the script at anytime.
                         
     [!]: This script checks to see if the target if vulnerable. It does not exploit the vulnerability!
+    [!]: You might need to use the dos2unix tool for conversion and functionality purposes on a Linux box!
 
     """);
 
