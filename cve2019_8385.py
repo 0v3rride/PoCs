@@ -17,32 +17,38 @@ def parseArgs():
 
     return parser.parse_args();
 
-def check():
-    args = parseArgs();
+def check(cargs):
+    args = cargs
     greq = None;
 
-    if args.tls:
-        greq = get("{}{}:{}".format("https://", args.host, args.port));
-    elif not args.tls:
-        greq = get("{}{}:{}".format("http://", args.host, args.port));
-    else:
-        greq = get("{}{}:{}".format("http://", args.host, args.port));
+    try:
+        if args.tls:
+            greq = get("{}{}:{}".format("https://", args.host, args.port));
+        elif not args.tls:
+            greq = get("{}{}:{}".format("http://", args.host, args.port));
+        else:
+            greq = get("{}{}:{}".format("http://", args.host, args.port));
 
-    if args.verbose:
-        print("{}:{}".format("Detailed Response", "-"*50));
-        for hdr in greq.headers.keys():
-            print("{}: {}".format(hdr, greq.headers[hdr]));
+        if args.verbose:
+            print("{}:{}".format("Detailed Response", "-"*58));
+            for hdr in greq.headers.keys():
+                print("{}: {}".format(hdr, greq.headers[hdr]));
 
-    if greq.content.find("<h1>Page Not Found</h1>Sorry, we couldn't find what you were looking :(") > -1:
-        print("[!!!]: The target looks like it is VULNERABLE to directory traversal!");
-        print("[i]: Use the following GET request value with the repeater tool in Burp Suite to confirm: \\..\\..\\..\\..\\..\\..\\..\\Windows\\System32\\Drivers\\etc\\hosts\n");
-        print("[i]: Make sure the paths you are traversing to don't end with a backslash '\\', otherwise it will not work. You'll know when this happens via an error message in the response.\n");
-        print("[i]: If you decide to run the request with the intruder tool in Brup Suite, then make sure Brup doesn't encode the payloads as this will not make it work either.\n");
-    else:
-        print("[i]: The target DOES NOT appear to be vulnerable to directory traversal. However, there is a chance that the error message was disabled, etc.")
-        print("[i]: You may to try the following GET request value with the repeater tool in Burp Suite to confirm: \\..\\..\\..\\..\\..\\..\\..\\Windows\\System32\\Drivers\\etc\\hosts\n");
-        print("[i]: Make sure the paths you are traversing to don't end with a backslash '\\'.\n");
-        print("[i]: If you decide to run the request with the intruder tool in Brup Suite, then make sure Brup doesn't encode the payloads as this will not make it work either.\n");
+        print("\n{}:{}".format("Vulnerability Information", "-"*50));
+
+        if greq.text.find("<h1>Page Not Found</h1>Sorry, we couldn't find what you were looking for :(") > -1:
+            print("[!!!]: The target appears to be VULNERABLE to directory traversal!\n");
+            print("[i]: Use the following GET request value with the repeater tool in Burp Suite to confirm: \\..\\..\\..\\..\\..\\..\\..\\Windows\\System32\\Drivers\\etc\\hosts\n");
+            print("[i]: Make sure the paths you are traversing to don't end with a backslash '\\', otherwise it will not work. You'll know when this happens via an error message in the response.\n");
+            print("[i]: If you decide to run the request with the intruder tool in Brup Suite, then make sure Brup doesn't encode the payloads as this will not make it work either.\n");
+        else:
+            print("[i]: The target DOES NOT appear to be vulnerable to directory traversal. However, there is a chance that the error message was disabled, etc.\n")
+            print("[i]: You may to try the following GET request value with the repeater tool in Burp Suite to confirm: \\..\\..\\..\\..\\..\\..\\..\\Windows\\System32\\Drivers\\etc\\hosts\n");
+            print("[i]: Make sure the paths you are traversing to don't end with a backslash '\\'.\n");
+            print("[i]: If you decide to run the request with the intruder tool in Brup Suite, then make sure Brup doesn't encode the payloads as this will not make it work either.\n");
+    except:
+        print("[i]: A connection to the target could not be made!\n");
+        print("[i]: The target may not be vulnerable to directory traversal. Check your information regarding the target and arguments then try again.\n");
 
 
 def main():
@@ -57,12 +63,13 @@ def main():
                         [*] Script has started...
                         [*] Use CTRL+C to cancel the script at anytime.
                         
-    [!]: This script checks to see if the target if vulnerable. It does not exploit the vulnerability!
+    [!]: This script checks to see if the target appears vulnerable, but does not guarantee it! It does not exploit the vulnerability either!
     [!]: You might need to use the dos2unix tool for conversion and functionality purposes on a Linux box!
 
     """);
 
-    parseArgs();
+    check(parseArgs());
+    #print(get("http://10.12.8.2:6677").text);
     print("[!]: Done!");
 
 #Begin
