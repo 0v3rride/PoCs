@@ -69,7 +69,6 @@ def main():
     """);
 
     check(parseArgs());
-    #print(get("http://10.12.8.2:6677").text);
     print("[!]: Done!");
 
 #Begin
